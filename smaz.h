@@ -4,13 +4,13 @@
 #ifdef __cplusplus
 extern "C"
 {
-#endif //__cplusplus
+#endif
 
-int smaz_compress(char *in, int inlen, char *out, int outlen);
-int smaz_decompress(char *in, int inlen, char *out, int outlen);
+int smaz_compress   (char *in, int inlen, char *out, int outlen);
+int smaz_decompress (char *in, int inlen, char *out, int outlen);
 
 #ifdef __cplusplus
 };
-#endif //__cplusplus
-
 #endif
+
+#endif /* _SMAZ_H */

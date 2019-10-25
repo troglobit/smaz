@@ -6,8 +6,8 @@ extern "C"
 {
 #endif
 
-int smaz_compress   (char *in, int inlen, char *out, int outlen);
-int smaz_decompress (char *in, int inlen, char *out, int outlen);
+int smaz_compress(const char *in, int inlen, char *out, int outlen);
+int smaz_decompress(char *in, int inlen, char *out, int outlen);
 
 #ifdef __cplusplus
 };

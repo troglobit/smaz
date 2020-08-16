@@ -6,72 +6,84 @@
 
 #define MAXSIZE 4096
 
-void usage()
-{
-	printf("Options: \n");
-	printf("	-c compress\n");
-	printf("	-d decompress\n");
-	printf("	-h show this page\n");
-	printf("	--help same as -h\n");
+static const char *prognm;
+
+int usage(int rc) {
+    FILE *fp = rc ? stderr : stdout;
+
+    fprintf(fp,
+            "Usage:\n"
+            "  %s [-cdh] infile outfile\n"
+            "\n"
+            "Options:\n"
+            "  -c          compress\n"
+            "  -d          decompress\n"
+            "  -h, --help  this help text\n", prognm);
+
+    return rc;
 }
 
-int main(int argc, char const *argv[])
-{
-	if (argc < 4 && argv[1] == NULL)
-	{
-		fprintf(stderr, "Usage: %s options infile outfile\n", argv[0]);
-		usage();
-		exit(EXIT_FAILURE);
-	}
+int main(int argc, char const *argv[]) {
+    char in[MAXSIZE];
+    char out[MAXSIZE];
+    const char *ptr;
+    FILE *fp_in;
+    FILE *fp_out;
+    int file_size;
+    int output_size;
 
-	else if (strncmp(argv[1], "--help", 6) == 0 || strncmp(argv[1], "-h", 2) == 0)
-	{
+    ptr = strrchr(argv[0], '/');
+    if (ptr)
+        ptr++;
+    else
+        ptr = argv[0];
+    prognm = ptr;
 
-		printf("Usage: %s options infile outfile\n", argv[0]);
-		usage();
-		exit(EXIT_SUCCESS);
-	}
+    if (!strncmp(argv[1], "--help", 6) || !strncmp(argv[1], "-h", 2))
+        return usage(0);
 
-	else if (argc < 4)
-	{
-		fprintf(stderr, "Usage: %s options infile outfile\n", argv[0]);
-		usage();
-		exit(EXIT_FAILURE);
-	}
+    if (argc < 4) {
+        fprintf(stderr, "[!] Too few arguments\n");
+        return usage(1);
+    }
+    if (strncmp(argv[1], "-c", 2) && strncmp(argv[1], "-d", 2)) {
+        fprintf(stderr, "[!] Invalid Option: %s\n", argv[1]);
+        return usage(1);
+    }
+        
 
-	char in[MAXSIZE];
-	char out[MAXSIZE];
+    fp_in = fopen(argv[2], "rb");
+    if (!fp_in) {
+        fprintf(stderr, "Failed opening input file %s: %m\n", argv[2]);
+        return 1;
+    }
+        
+    fp_out = fopen(argv[3], "wb");
+    if (!fp_out) {
+        fclose(fp_in);
+        fprintf(stderr, "Failed opening output file %s: %m\n", argv[3]);
+        return 1;
+    }
 
-	FILE *fp_in = fopen(argv[2], "rb");
-	FILE *fp_out = fopen(argv[3], "wb");
+    fseek(fp_in, 0, SEEK_END);
+    file_size = ftell(fp_in);
+    fseek(fp_in, 0, SEEK_SET);
 
-	int file_size;
-	int output_size;
+    fread(in, file_size, 1, fp_in);
 
-	fseek(fp_in, 0, SEEK_END);
-	file_size = ftell(fp_in);
-	fseek(fp_in, 0, SEEK_SET);
+    if (strncmp(argv[1], "-c", 2) == 0)
+        output_size = smaz_compress(in, file_size, out, MAXSIZE);
+    else
+        output_size = smaz_decompress(in, file_size, out, MAXSIZE);
 
-	fread(in, file_size, 1, fp_in);
+    fwrite(out, output_size, 1, fp_out);
+    fclose(fp_in);
+    fclose(fp_out);
 
-	if (strncmp(argv[1], "-c", 2) == 0)
-		output_size = smaz_compress(in, file_size, out, MAXSIZE);
+    return 0;
+}
 
-	else if (strncmp(argv[1], "-d", 2) == 0)
-		output_size = smaz_decompress(in, file_size, out, MAXSIZE);
-
-	else 
-	{
-		fprintf(stderr, "[!] Invalid Option: %s\n", argv[1]);
-		exit(EXIT_FAILURE);
-	}
-
-	fwrite(out, output_size, 1, fp_out);
-
-	fclose(fp_in);
-	fclose(fp_out);
-	return 0;
-}/**
+/**
  * Local Variables:
  *  indent-tabs-mode: nil
  *  c-file-style: "stroustrup"

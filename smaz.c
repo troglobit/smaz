@@ -192,3 +192,10 @@ int smaz_decompress(char *in, int inlen, char *out, int outlen) {
     }
     return out-_out;
 }
+
+/**
+ * Local Variables:
+ *  indent-tabs-mode: nil
+ *  c-file-style: "stroustrup"
+ * End:
+ */

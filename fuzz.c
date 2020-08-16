@@ -46,3 +46,10 @@ int main(int argc, char *argv[])
 
 	return EXIT_SUCCESS;
 }
+
+/**
+ * Local Variables:
+ *  indent-tabs-mode: nil
+ *  c-file-style: "stroustrup"
+ * End:
+ */

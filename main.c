@@ -71,4 +71,9 @@ int main(int argc, char const *argv[])
 	fclose(fp_in);
 	fclose(fp_out);
 	return 0;
-}
+}/**
+ * Local Variables:
+ *  indent-tabs-mode: nil
+ *  c-file-style: "stroustrup"
+ * End:
+ */

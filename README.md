@@ -15,8 +15,8 @@ or three bytes!
 
 For example the string "the" is compressed into a single byte.
 
-To compare this with other libraries, think that like zlib will usually
-not be able to compress text shorter than 100 bytes.
+To compare this with other libraries, think that like [zlib][] will
+usually not be able to compress text shorter than 100 bytes.
 
 
 EXAMPLES
@@ -76,5 +76,11 @@ string did not include one.
 CREDITS
 -------
 
-Smaz was written by Salvatore Sanfilippo and is released under the
-3-clause BSD license.  Check the file LICENSE for more information.
+Smaz was written by [Salvatore Sanfilippo][antirez] and is released
+under the [3-clause BSD license][bsd].  Check the file [LICENSE][] for
+more information.
+
+[zlib]:    https://github.com/madler/zlib
+[antirez]: https://github.com/antirez
+[bsd]:     https://en.wikipedia.org/wiki/BSD_licenses
+[LICENSE]: LICENSE

@@ -1,0 +1,9 @@
+*.o
+*~
+GPATH
+GRTAGS
+GTAGS
+ID
+smaz
+test
+fuzz

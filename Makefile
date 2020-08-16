@@ -1,18 +1,19 @@
-EXEC = smaz smaz_test
+EXEC   = smaz test
+CFLAGS = -O2 -Wall -W -ansi -pedantic
 
 all: $(EXEC)
 
-smaz_test: smaz_test.c smaz.c
-	gcc -o smaz_test -O2 -Wall -W -ansi -pedantic $^
+test: test.c smaz.c
+	gcc -o $@ $(CFLAGS) $^
 
 smaz: main.c smaz.c
-	gcc -o smaz -O2 -Wall -W -ansi -pedantic $^
+	gcc -o $@ $(CFLAGS) $^
 
 fuzz: fuzz.c smaz.c
-	afl-gcc -o $@ -O2 -Wall -W -ansi -pedantic $^
+	afl-gcc -o $@ $(CFLAGS) $^
 
-check: smaz_test
-	./smaz_test
+check: test
+	./$^
 
 clean:
 	$(RM) $(EXEC)

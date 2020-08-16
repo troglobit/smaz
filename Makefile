@@ -8,6 +8,9 @@ smaz_test: smaz_test.c smaz.c
 smaz: main.c smaz.c
 	gcc -o smaz -O2 -Wall -W -ansi -pedantic $^
 
+fuzz: fuzz.c smaz.c
+	afl-gcc -o $@ -O2 -Wall -W -ansi -pedantic $^
+
 check: smaz_test
 	./smaz_test
 
